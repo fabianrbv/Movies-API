@@ -1,0 +1,61 @@
+### GET all movies
+GET http://localhost:8080/movies
+Accept: application/json
+
+###
+
+### GET single movie by ID
+# 👉 Reemplaza ID_HERE con un ID real de MongoDB una vez tengas uno
+GET http://localhost:8080/movies/691d4778359113cceb723075
+Accept: application/json
+
+###
+
+### POST new movie
+POST http://localhost:8080/movies
+Content-Type: application/json
+
+{
+  "title": "Inception",
+  "genre": "Sci-Fi",
+  "year": 2010,
+  "rating": 9,
+  "director": "Christopher Nolan",
+  "duration": 148,
+  "description": "A mind-bending thriller"
+}
+
+###
+
+### POST movie with missing fields (should return 400)
+POST http://localhost:8080/movies
+Content-Type: application/json
+
+{
+  "title": "",
+  "genre": "Action"
+}
+
+###
+
+### PUT update movie
+# 👉 Reemplaza ID_HERE con un ID real
+PUT http://localhost:8080/movies/ID_HERE
+Content-Type: application/json
+
+{
+  "title": "Inception Updated",
+  "genre": "Sci-Fi",
+  "year": 2010,
+  "rating": 10,
+  "director": "Christopher Nolan",
+  "duration": 148,
+  "description": "Updated description"
+}
+
+###
+
+### DELETE movie
+# 👉 Reemplaza ID_HERE con un ID real
+DELETE http://localhost:8080/movies/ID_HERE
+Accept: application/json
