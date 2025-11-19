@@ -1,54 +1,3 @@
-### ==================== CATEGORIES ====================
-
-### GET all categories
-GET http://localhost:8080/categories
-Accept: application/json
-
-###
-
-### GET single category by ID
-# 👉 Reemplaza ID_HERE con un ID real de MongoDB
-GET http://localhost:8080/categories/ID_HERE
-Accept: application/json
-
-###
-
-### POST new category
-POST http://localhost:8080/categories
-Content-Type: application/json
-
-{
-  "name": "Action"
-}
-
-###
-
-### POST category with missing fields (should return 400)
-POST http://localhost:8080/categories
-Content-Type: application/json
-
-{
-  "name": ""
-}
-
-###
-
-### PUT update category
-# 👉 Reemplaza ID_HERE con un ID real
-PUT http://localhost:8080/categories/ID_HERE
-Content-Type: application/json
-
-{
-  "name": "Action & Adventure"
-}
-
-###
-
-### DELETE category
-# 👉 Reemplaza ID_HERE con un ID real
-DELETE http://localhost:8080/categories/ID_HERE
-Accept: application/json
-
 ### ==================== MOVIES ====================
 
 ### GET all movies
@@ -70,14 +19,14 @@ POST http://localhost:8080/movies
 Content-Type: application/json
 
 {
-  "title": "Inception",
+  "title": "el origen",
   "genre": "Sci-Fi",
   "year": 2010,
   "rating": 9,
   "director": "Christopher Nolan",
   "duration": 148,
   "description": "A mind-bending thriller",
-  "category": "CATEGORY_ID"
+  "category": "691d620213c4763c84acbc4d"
 }
 
 ###
@@ -106,7 +55,7 @@ Content-Type: application/json
   "director": "Christopher Nolan",
   "duration": 148,
   "description": "Updated description",
-  "category": "CATEGORY_ID"
+  "category": "691d620213c4763c84acbc4d"
 }
 
 ###
@@ -139,7 +88,7 @@ POST http://localhost:8080/categories
 Content-Type: application/json
 
 {
-  "name": "Adventure"
+  "name": "Sci-Fi"
 }
 
 ###
