@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const moviesRoutes = require('./routes/moviesRoutes');
+const categoriesRoutes = require('./routes/categories');
 
 const app = express();
 
@@ -24,6 +25,7 @@ mongoose.connect(process.env.MONGO_URI, {
 .catch(err => console.log('DB Connection Error:', err));
 
 // Routes
+app.use('/categories', categoriesRoutes);
 app.use('/movies', moviesRoutes);
 
 // Server start

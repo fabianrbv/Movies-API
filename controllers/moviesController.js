@@ -1,9 +1,14 @@
 const Movie = require('../models/Movie');
+const Category = require('../models/Category');
+
+//
+// ─── MOVIES CRUD ───────────────────────────────────────────────────────────────
+//
 
 // GET all movies
 const getAllMovies = async (req, res) => {
   try {
-    const movies = await Movie.find();
+    const movies = await Movie.find().populate('category');
     res.json(movies);
   } catch (err) {
     res.status(500).json({ error: 'Error fetching movies' });
@@ -13,7 +18,7 @@ const getAllMovies = async (req, res) => {
 // GET movie by ID
 const getMovie = async (req, res) => {
   try {
-    const movie = await Movie.findById(req.params.id);
+    const movie = await Movie.findById(req.params.id).populate('category');
     if (!movie) return res.status(404).json({ error: 'Movie not found' });
 
     res.json(movie);
@@ -25,10 +30,16 @@ const getMovie = async (req, res) => {
 // POST create movie
 const createMovie = async (req, res) => {
   try {
-    const { title, director, year, genre, rating, duration, description } = req.body;
+    const { title, director, year, genre, rating, duration, description, category } = req.body;
 
-    if (!title || !director || !year || !genre || !rating || !duration || !description) {
-      return res.status(400).json({ error: 'All fields are required' });
+    if (!title || !director || !year || !genre || !rating || !duration || !description || !category) {
+      return res.status(400).json({ error: 'All fields including category are required' });
+    }
+
+    // Validate category exists
+    const existingCategory = await Category.findById(category);
+    if (!existingCategory) {
+      return res.status(404).json({ error: 'Category not found' });
     }
 
     const newMovie = new Movie(req.body);
@@ -43,8 +54,15 @@ const createMovie = async (req, res) => {
 // PUT update movie
 const updateMovie = async (req, res) => {
   try {
-    const updated = await Movie.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    // Validate new category if provided
+    if (req.body.category) {
+      const exists = await Category.findById(req.body.category);
+      if (!exists) {
+        return res.status(404).json({ error: 'Category not found' });
+      }
+    }
 
+    const updated = await Movie.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updated) return res.status(404).json({ error: 'Movie not found' });
 
     res.sendStatus(204);
@@ -57,7 +75,6 @@ const updateMovie = async (req, res) => {
 const deleteMovie = async (req, res) => {
   try {
     const deleted = await Movie.findByIdAndDelete(req.params.id);
-
     if (!deleted) return res.status(404).json({ error: 'Movie not found' });
 
     res.sendStatus(204);
@@ -66,10 +83,90 @@ const deleteMovie = async (req, res) => {
   }
 };
 
+
+//
+// ─── CATEGORIES CRUD ───────────────────────────────────────────────────────────
+//
+
+// GET all categories
+const getAllCategories = async (req, res) => {
+  try {
+    const categories = await Category.find();
+    res.json(categories);
+  } catch (err) {
+    res.status(500).json({ error: 'Error fetching categories' });
+  }
+};
+
+// GET category by ID
+const getCategory = async (req, res) => {
+  try {
+    const category = await Category.findById(req.params.id);
+    if (!category) return res.status(404).json({ error: 'Category not found' });
+
+    res.json(category);
+  } catch (err) {
+    res.status(500).json({ error: 'Error fetching category' });
+  }
+};
+
+// POST create category
+const createCategory = async (req, res) => {
+  try {
+    if (!req.body.name) {
+      return res.status(400).json({ error: 'Category name is required' });
+    }
+
+    const newCategory = new Category({ name: req.body.name });
+    const saved = await newCategory.save();
+
+    res.status(201).json({ id: saved._id });
+  } catch (err) {
+    res.status(500).json({ error: 'Error creating category' });
+  }
+};
+
+// PUT update category
+const updateCategory = async (req, res) => {
+  try {
+    if (!req.body.name) {
+      return res.status(400).json({ error: 'Category name is required' });
+    }
+
+    const updated = await Category.findByIdAndUpdate(req.params.id, req.body, { new: true });
+
+    if (!updated) return res.status(404).json({ error: 'Category not found' });
+
+    res.sendStatus(204);
+  } catch (err) {
+    res.status(500).json({ error: 'Error updating category' });
+  }
+};
+
+// DELETE category
+const deleteCategory = async (req, res) => {
+  try {
+    const deleted = await Category.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: 'Category not found' });
+
+    res.sendStatus(204);
+  } catch (err) {
+    res.status(500).json({ error: 'Error deleting category' });
+  }
+};
+
 module.exports = {
+  // Movies
   getAllMovies,
   getMovie,
   createMovie,
   updateMovie,
-  deleteMovie
+  deleteMovie,
+
+  // Categories
+  getAllCategories,
+  getCategory,
+  createCategory,
+  updateCategory,
+  deleteCategory
 };
