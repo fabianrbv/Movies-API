@@ -5,8 +5,7 @@ const mongoose = require('mongoose');
 // GET all movies
 const getAllMovies = async (req, res) => {
   try {
-    const movies = await Movie.find().populate('category');
-    const movies = await Movie.find().populate('category');
+    const movies = await Movie.find();
     res.json(movies);
   } catch (err) {
     res.status(500).json({ error: 'Error fetching movies', details: err.message });

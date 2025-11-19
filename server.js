@@ -27,7 +27,6 @@ mongoose.connect(process.env.MONGO_URI, {
 // Routes
 app.use('/categories', categoriesRoutes);
 app.use('/movies', moviesRoutes);
-app.use('/categories', categoriesRoutes);
 
 // Server start
 const PORT = process.env.PORT || 8080;
