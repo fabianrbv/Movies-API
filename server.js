@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const moviesRoutes = require('./routes/moviesRoutes');
+const categoriesRoutes = require('./routes/categoriesRoutes');
 
 const app = express();
 
@@ -25,6 +26,7 @@ mongoose.connect(process.env.MONGO_URI, {
 
 // Routes
 app.use('/movies', moviesRoutes);
+app.use('/categories', categoriesRoutes);
 
 // Server start
 const PORT = process.env.PORT || 8080;

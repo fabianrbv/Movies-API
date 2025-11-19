@@ -81,7 +81,7 @@
           }
         },
         "responses": {
-          "200": {
+          "204": {
             "description": "Movie updated"
           },
           "404": {
@@ -99,7 +99,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Movie deleted"
           },
           "404": {
@@ -108,7 +108,6 @@
         }
       }
     },
-
     "/categories": {
       "get": {
         "summary": "Get all categories",
@@ -179,7 +178,7 @@
           }
         },
         "responses": {
-          "200": {
+          "204": {
             "description": "Category updated"
           },
           "404": {
@@ -197,7 +196,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Category deleted"
           },
           "404": {
@@ -207,7 +206,6 @@
       }
     }
   },
-
   "components": {
     "schemas": {
       "Movie": {
@@ -215,14 +213,24 @@
         "properties": {
           "title": { "type": "string" },
           "director": { "type": "string" },
-          "year": { "type": "number" }
-        }
+          "year": { "type": "integer" },
+          "genre": { "type": "string" },
+          "rating": { "type": "number" },
+          "duration": { "type": "integer" },
+          "description": { "type": "string" },
+          "category": { 
+            "type": "string",
+            "description": "ID of the category" 
+          }
+        },
+        "required": ["title","director","year","genre","rating","duration","description","category"]
       },
       "Category": {
         "type": "object",
         "properties": {
           "name": { "type": "string" }
-        }
+        },
+        "required": ["name"]
       }
     }
   }

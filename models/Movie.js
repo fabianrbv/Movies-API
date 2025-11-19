@@ -7,7 +7,12 @@ const movieSchema = new mongoose.Schema({
   genre: { type: String, required: true },
   rating: { type: Number, required: true },
   duration: { type: Number, required: true },
-  description: { type: String, required: true }
+  description: { type: String, required: true },
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+    required: true
+  }
 });
 
 module.exports = mongoose.model('Movie', movieSchema);

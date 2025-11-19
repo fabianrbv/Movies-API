@@ -1,3 +1,56 @@
+### ==================== CATEGORIES ====================
+
+### GET all categories
+GET http://localhost:8080/categories
+Accept: application/json
+
+###
+
+### GET single category by ID
+# 👉 Reemplaza ID_HERE con un ID real de MongoDB
+GET http://localhost:8080/categories/ID_HERE
+Accept: application/json
+
+###
+
+### POST new category
+POST http://localhost:8080/categories
+Content-Type: application/json
+
+{
+  "name": "Action"
+}
+
+###
+
+### POST category with missing fields (should return 400)
+POST http://localhost:8080/categories
+Content-Type: application/json
+
+{
+  "name": ""
+}
+
+###
+
+### PUT update category
+# 👉 Reemplaza ID_HERE con un ID real
+PUT http://localhost:8080/categories/ID_HERE
+Content-Type: application/json
+
+{
+  "name": "Action & Adventure"
+}
+
+###
+
+### DELETE category
+# 👉 Reemplaza ID_HERE con un ID real
+DELETE http://localhost:8080/categories/ID_HERE
+Accept: application/json
+
+### ==================== MOVIES ====================
+
 ### GET all movies
 GET http://localhost:8080/movies
 Accept: application/json
@@ -5,13 +58,14 @@ Accept: application/json
 ###
 
 ### GET single movie by ID
-# 👉 Reemplaza ID_HERE con un ID real de MongoDB una vez tengas uno
-GET http://localhost:8080/movies/691d4778359113cceb723075
+# 👉 Reemplaza ID_HERE con un ID real de MongoDB
+GET http://localhost:8080/movies/ID_HERE
 Accept: application/json
 
 ###
 
 ### POST new movie
+# 👉 Reemplaza CATEGORY_ID con un ID real de categoría
 POST http://localhost:8080/movies
 Content-Type: application/json
 
@@ -22,7 +76,8 @@ Content-Type: application/json
   "rating": 9,
   "director": "Christopher Nolan",
   "duration": 148,
-  "description": "A mind-bending thriller"
+  "description": "A mind-bending thriller",
+  "category": "CATEGORY_ID"
 }
 
 ###
@@ -40,6 +95,7 @@ Content-Type: application/json
 
 ### PUT update movie
 # 👉 Reemplaza ID_HERE con un ID real
+# 👉 Reemplaza CATEGORY_ID con un ID real de categoría
 PUT http://localhost:8080/movies/ID_HERE
 Content-Type: application/json
 
@@ -50,7 +106,8 @@ Content-Type: application/json
   "rating": 10,
   "director": "Christopher Nolan",
   "duration": 148,
-  "description": "Updated description"
+  "description": "Updated description",
+  "category": "CATEGORY_ID"
 }
 
 ###
