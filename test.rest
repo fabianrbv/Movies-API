@@ -73,7 +73,7 @@ Accept: application/json
 
 ### GET category by ID
 # 👉 Reemplaza ID_REAL con un ID existente
-GET http://localhost:8080/categories/ID_REAL
+GET http://localhost:8080/categories/691d4eff81eae9504c6c3c47
 Accept: application/json
 
 ###
