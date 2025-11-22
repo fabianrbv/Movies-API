@@ -28,7 +28,9 @@ const getCategory = async (req, res) => {
 // POST create category
 const createCategory = async (req, res) => {
   const { name } = req.body;
-  if (!name) return res.status(400).json({ error: 'Category name is required' });
+  if (!name || typeof name !== "string" || name.trim() === "") {
+  return res.status(400).json({ error: "Category name must be a non-empty string" });
+}
 
   try {
     const newCategory = new Category({ name });
