@@ -7,14 +7,12 @@ Accept: application/json
 ###
 
 ### GET single movie by ID
-# 👉 Reemplaza ID_HERE con un ID real de MongoDB una vez tengas uno
 GET http://localhost:8080/movies/691d4778359113cceb723075
 Accept: application/json
 
 ###
 
 ### POST new movie
-# 👉 Reemplaza CATEGORY_ID con un ID real de categoría
 POST http://localhost:8080/movies
 Content-Type: application/json
 
@@ -43,7 +41,6 @@ Content-Type: application/json
 ###
 
 ### PUT update movie
-# 👉 Reemplaza ID_HERE con un ID real
 PUT http://localhost:8080/movies/ID_HERE
 Content-Type: application/json
 
@@ -61,7 +58,6 @@ Content-Type: application/json
 ###
 
 ### DELETE movie
-# 👉 Reemplaza ID_REAL por un ID existente
 DELETE http://localhost:8080/movies/ID_REAL
 Accept: application/json
 
@@ -77,7 +73,6 @@ Accept: application/json
 ###
 
 ### GET category by ID
-# 👉 Reemplaza ID_REAL con un ID existente
 GET http://localhost:8080/categories/691d4eff81eae9504c6c3c47
 Accept: application/json
 
@@ -104,7 +99,6 @@ Content-Type: application/json
 ###
 
 ### PUT update category
-# 👉 Reemplaza ID_REAL por un ID existente
 PUT http://localhost:8080/categories/ID_REAL
 Content-Type: application/json
 
@@ -115,6 +109,5 @@ Content-Type: application/json
 ###
 
 ### DELETE category
-# 👉 Reemplaza ID_REAL por un ID existente
 DELETE http://localhost:8080/categories/ID_REAL
 Accept: application/json
