@@ -24,6 +24,10 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.log('DB Connection Error:', err));
 
+app.get('/', (req, res) => {
+  res.send('API is running! Visit /api-docs');
+});
+
 // Routes
 app.use('/categories', categoriesRoutes);
 app.use('/movies', moviesRoutes);
