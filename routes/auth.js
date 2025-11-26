@@ -1,16 +1,24 @@
 const router = require("express").Router();
 const passport = require("../config/passport");
 
-router.use("/categoriesRoutes", require("./categoriesRoutes"));
-router.use("/moviesRoutes", require("./moviesRoutes"));
+// Login con GitHub (usa scope)
+router.get(
+  "/github",
+  passport.authenticate("github", { scope: ["user:email"] })
+);
 
-router.get("/login", passport.authenticate("github"), (req, res) => {});
+// Callback
+router.get(
+  "/github/callback",
+  passport.authenticate("github", { failureRedirect: "/api-docs" }),
+  (req, res) => {
+    res.redirect("/");
+  }
+);
 
-router.get("/logout", function (req, res, next) {
-  req.logout(function (err) {
-    if (err) { 
-      return next(err); 
-    }
+// Logout
+router.get("/logout", (req, res) => {
+  req.logout(() => {
     res.redirect("/");
   });
 });
