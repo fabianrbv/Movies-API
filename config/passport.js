@@ -1,12 +1,14 @@
 const passport = require("passport");
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const GithubStrategy = require("passport-github2").Strategy;
 const User = require("../models/User");
 require("dotenv").config();
 
+// Guardamos solo el ID del usuario en la sesión
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
+// Obtenemos el usuario desde la DB cuando llega una sesión
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await User.findById(id);
@@ -16,24 +18,32 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
+// Estrategia de login con GitHub
 passport.use(
-  new GoogleStrategy(
+  new GithubStrategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `${process.env.SERVER_URL}/auth/google/callback`
+      clientID: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      callbackURL: `${process.env.SERVER_URL}/auth/github/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        let existing = await User.findOne({ googleId: profile.id });
-        if (existing) {
-          return done(null, existing);
+        // Buscar si ya existe
+        let existingUser = await User.findOne({ githubId: profile.id });
+
+        if (existingUser) {
+          return done(null, existingUser);
         }
+
+        // Crear nuevo usuario
         const newUser = new User({
-          googleId: profile.id,
+          githubId: profile.id,
           displayName: profile.displayName,
-          email: profile.emails && profile.emails[0].value
+          username: profile.username,
+          avatar: profile.photos?.[0]?.value,
+          email: profile.emails?.[0]?.value,
         });
+
         await newUser.save();
         done(null, newUser);
       } catch (err) {
