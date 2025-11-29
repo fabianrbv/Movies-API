@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const session = require("express-session");
-const passport = require("./config/passport");  // ESTA ES LA ÚNICA CONFIG PASSPORT
+const passport = require("./config/passport");  
 const mongoose = require('mongoose');
 const cors = require('cors');
 const moviesRoutes = require('./routes/moviesRoutes');
@@ -16,31 +16,35 @@ const app = express();
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "https://movies-api-gu0u.onrender.com",
+  credentials: true
+}));
 app.use(express.json());
 
 // Session + Passport
-app.use(
-  session({
-    secret: "secret",
-    resave: false,
-    saveUninitialized: true,
-  })
-);
+app.use(session({
+  secret: "secret",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: false,
+    maxAge: 1000 * 60 * 60 * 24
+  }
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// CORS Headers (solo una vez)
+// CORS Headers
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
+  res.header("Access-Control-Allow-Origin", "https://movies-api-gu0u.onrender.com");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Z-Key, Authorization"
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "POST, GET, PUT, PATCH, OPTIONS, DELETE"
-  );
+  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
   next();
 });
 
@@ -50,9 +54,10 @@ app.use('/categories', categoriesRoutes);
 app.use('/movies', moviesRoutes);
 
 app.get("/", (req, res) => {
-  if (req.user) {
+  if (req.isAuthenticated() && req.user) {
     return res.send(`Logged in as ${req.user.displayName}`);
   }
+
   res.send("Logged Out - Visit /api-docs");
 });
 
