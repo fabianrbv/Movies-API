@@ -49,7 +49,7 @@ app.use((req, res, next) => {
 });
 
 // Rutas
-app.use("/", require("./routes/auth.js"));
+app.use("/auth", require("./routes/auth.js"));
 app.use('/categories', categoriesRoutes);
 app.use('/movies', moviesRoutes);
 
